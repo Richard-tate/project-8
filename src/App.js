@@ -1,6 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import data from './data';
+import { CgDarkMode} from 'react-icons/cg';
+
+
+
+const getStorageTheme = () => {
+  let theme = 'light_theme';
+  if(localStorage.getItem('theme')){
+    theme = localStorage.getItem('theme');
+  }
+  return theme;
+};
+
+
 function App() {
+
+  const [theme, setTheme] = useState(getStorageTheme);
+
+  const toggleTheme = () => {
+    if(theme === 'light_theme'){
+       setTheme('dark_theme');
+    }else {
+      setTheme('light_theme');
+    }
+   
+  };
+
+  useEffect(() => {
+    document.documentElement.className = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
   
   const [count, setCount] = useState(0);
   const [text,setText] = useState([]);
@@ -20,6 +50,7 @@ function App() {
   return (
         <section className="section-center">
             <h3>Tired of boring Lorem Ipsum ?</h3>
+            <button className="btn toggle-btn" onClick={toggleTheme}><CgDarkMode/></button>
             <form className='lorem-form' onSubmit={handleSubmit}>
                 <label htmlFor="amount">
                     paragraphs:
